@@ -12,8 +12,17 @@ module.exports = {
     ecmaVersion: 2020,
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'import/no-extraneous-dependencies': ["error", {"devDependencies": true}],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'arrow-parens': [
+      2,
+      "as-needed"
+    ],
+    'class-methods-use-this': 'off',
+    'lines-between-class-members': 'off',
+    'max-classes-per-file': 'off',
   },
   overrides: [
     {

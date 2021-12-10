@@ -1,6 +1,61 @@
 import { createApp } from 'vue';
+import {
+  // create naive ui
+  create,
+  // component
+  NButton,
+  NConfigProvider,
+  NSpace,
+  NLayout,
+  NLayoutHeader,
+  NLayoutContent,
+  NLayoutFooter,
+  NLayoutSider,
+  NIcon,
+  NCard,
+  NInput,
+  NInputNumber,
+  NH2,
+  NForm,
+  NFormItem,
+  NFormItemGi,
+  NGrid,
+  NGi,
+  NPopconfirm,
+  NCheckbox,
+} from 'naive-ui';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+// 通用字体
+import 'vfonts/Lato.css';
+// 等宽字体
+import 'vfonts/FiraCode.css';
 
-createApp(App).use(store).use(router).mount('#app');
+const naive = create({
+  components: [
+    NButton,
+    NConfigProvider,
+    NSpace,
+    NLayout,
+    NLayoutHeader,
+    NLayoutContent,
+    NLayoutFooter,
+    NLayoutSider,
+    NIcon,
+    NCard,
+    NInput,
+    NInputNumber,
+    NH2,
+    NForm,
+    NFormItem,
+    NFormItemGi,
+    NGrid,
+    NGi,
+    NPopconfirm,
+    NCheckbox,
+  ],
+});
+
+createApp(App).use(naive).use(store).use(router)
+  .mount('#app');
