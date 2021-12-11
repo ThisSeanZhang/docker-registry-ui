@@ -10,6 +10,7 @@
         :native-scrollbar="false"
         bordered
       >
+      {{this.store.queryImages}}
         <n-h2>海淀桥</n-h2>
         <n-h2>海淀桥</n-h2>
         <n-h2>海淀桥</n-h2>
@@ -45,10 +46,18 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { useStore } from '@/store/image';
+// import { key } from './store';
 
 @Options({
   components: {
   },
 })
-export default class Search extends Vue {}
+export default class Search extends Vue {
+  public store = useStore();
+  created() {
+    this.store.FETCH_IMAGES();
+    console.log();
+  }
+}
 </script>

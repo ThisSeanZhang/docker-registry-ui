@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     'import/no-extraneous-dependencies': ["error", {"devDependencies": true}],
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": ["off"],
     'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'arrow-parens': [

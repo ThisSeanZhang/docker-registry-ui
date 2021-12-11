@@ -9,6 +9,7 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component';
 import { darkTheme } from 'naive-ui';
+import axios from 'axios';
 // import { invoke } from '@tauri-apps/api/tauri';
 
 @Options({
@@ -27,7 +28,9 @@ export default class App extends Vue {
   public theme = darkTheme;
 
   created(): void {
-    console.log(darkTheme);
+    const isPro = Object.is(process.env.NODE_ENV, 'development');
+    const baseUrl = isPro ? '/test' : '/';
+    axios.defaults.baseURL = baseUrl;
   }
 }
 </script>
