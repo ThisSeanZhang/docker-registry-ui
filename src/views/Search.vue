@@ -25,6 +25,7 @@
       </n-input-group>
       <n-menu
         :options="menuOptions"
+        @update:value="menuUpdate"
         accordion
       />
       </n-layout-sider>
@@ -80,6 +81,10 @@ export default class Search extends Vue {
       .forEach((child, key) => {
         this.menuOptions.push(this.buidlMenuItem(key, child));
       });
+  }
+
+  menuUpdate(key: string) {
+    this.$router.push(`/images/${key}/tags`);
   }
 
   private buidlMenuItem(key: string, list: Array<string>): MenuItem {

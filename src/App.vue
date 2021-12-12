@@ -2,7 +2,7 @@
 <n-config-provider :theme="theme" style="height: 100%;">
   <n-notification-provider>
     <n-layout style="height: 100%;">
-      <router-view/>
+      <Search/>
     </n-layout>
   </n-notification-provider>
 </n-config-provider>
@@ -12,10 +12,12 @@
 import { Vue, Options } from 'vue-class-component';
 import { darkTheme } from 'naive-ui';
 import axios from 'axios';
+import Search from '@/views/Search.vue';
 // import { invoke } from '@tauri-apps/api/tauri';
 
 @Options({
   components: {
+    Search,
   },
 })
 export default class App extends Vue {
