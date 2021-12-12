@@ -56,7 +56,7 @@ import { useStore } from '@/store/image';
 export default class Search extends Vue {
   public store = useStore();
   created() {
-    this.store.FETCH_IMAGES();
+    this.store.FETCH_CATALOG();
     console.log();
   }
 }

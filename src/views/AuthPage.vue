@@ -1,14 +1,18 @@
 <template>
   <div class="welcome-card">
     <n-card title="Welcome" hoverable>
-      <n-form :model="auth" ref="formRef">
+      <n-form :model="info.auth" ref="formRef">
         <n-form-item path="name">
-          <n-input placeholder="Username" v-model:value="auth.name" @keydown.enter.prevent />
+          <n-input placeholder="Username"
+            v-model:value="info.auth.username"
+            @keydown.enter.prevent
+          />
         </n-form-item>
         <n-form-item path="passwd" >
           <n-input
             placeholder="Password"
-            v-model:value="auth.passwd"
+            show-password-on="mousedown"
+            v-model:value="info.auth.password"
             type="password"
             @keydown.enter.prevent
           />
@@ -19,7 +23,7 @@
               <n-checkbox
                 checked-value=true
                 unchecked-value=false
-                @update:checked="value => this.keep = value" label="Keep Me" />
+                @update:checked="value => info.keep = value" label="Keep Me" />
               <n-button
                 @click="handleValidateButtonClick"
                 :disabled="notDone"
@@ -35,25 +39,54 @@
 </template>
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import BaseAuth from '@/lib/BaseAuth';
+import { useNotification } from 'naive-ui';
+import { useStore } from '@/store/auth';
+import { UserAuth } from '@/@types';
 
 @Options({
   components: {
   },
 })
 export default class Home extends Vue {
-  public auth: BaseAuth = new BaseAuth();
-  public keep = false;
+  public store = useStore();
+  public notification = useNotification()
+  public info: UserAuth = {
+    auth: {
+      username: '',
+      password: '',
+    },
+    keep: false,
+  };
+  created() {
+    const {
+      auth: {
+        username,
+        password,
+      },
+      keep,
+    } = this.store.loadAuth;
+    this.info = {
+      auth: {
+        username,
+        password,
+      },
+      keep,
+    };
+  }
+
   handleValidateButtonClick() {
-    console.log(this.keep);
-    if (this.keep) {
-      localStorage.setItem('auth', JSON.stringify(this.auth));
-    }
-    console.log('aaa');
+    this.store.AUTH_PASS(this.info).then(result => {
+      this.notification[result ? 'success' : 'error']({
+        content: result ? 'Auth Success' : 'Auth Error',
+        meta: result ? 'Enjoy' : 'Please Try Again',
+        duration: 5000,
+      });
+    });
   }
 
   get notDone() {
-    return this.auth.name === '' || this.auth.passwd === '';
+    // return this.auth.name === '' || this.auth.passwd === '';
+    return false;
   }
 }
 </script>

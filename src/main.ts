@@ -23,6 +23,9 @@ import {
   NGi,
   NPopconfirm,
   NCheckbox,
+  NCol,
+  NRow,
+  NNotificationProvider,
 } from 'naive-ui';
 import App from './App.vue';
 import router from './router';
@@ -54,6 +57,9 @@ const naive = create({
     NGi,
     NPopconfirm,
     NCheckbox,
+    NCol,
+    NRow,
+    NNotificationProvider,
   ],
 });
 

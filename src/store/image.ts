@@ -14,11 +14,13 @@ export const useStore = defineStore('image', {
     queryImages: state => state.repositories,
   },
   actions: {
-    FETCH_IMAGES() {
+    FETCH_CATALOG() {
       query.query<CatLog>({
         url: '_catalog',
       }).then(res => {
-        this.repositories = res.data.repositories;
+        this.repositories = res.repositories;
+      }).catch(res => {
+        console.log(res);
       });
     },
   },

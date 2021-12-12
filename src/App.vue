@@ -1,8 +1,10 @@
 <template>
 <n-config-provider :theme="theme" style="height: 100%;">
-  <n-layout style="height: 100%;">
-    <router-view/>
-  </n-layout>
+  <n-notification-provider>
+    <n-layout style="height: 100%;">
+      <router-view/>
+    </n-layout>
+  </n-notification-provider>
 </n-config-provider>
 </template>
 
