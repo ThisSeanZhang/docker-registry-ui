@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import query from '@/query';
-import { CatLog } from '@/@types';
+import { CataLog } from '@/@types';
 // export enum ImageActions {
 //   FETCH_IMAGES = 'FETCH_IMAGES',
 // }
@@ -14,14 +14,15 @@ export const useStore = defineStore('image', {
     queryImages: state => state.repositories,
   },
   actions: {
-    FETCH_CATALOG() {
-      query.query<CatLog>({
-        url: '_catalog',
-      }).then(res => {
-        this.repositories = res.repositories;
-      }).catch(res => {
-        console.log(res);
-      });
+    async FETCH_CATALOG(): Promise<void> {
+      try {
+        const catalog = await query.query<CataLog>({
+          url: '_catalog',
+        });
+        this.repositories = catalog.repositories;
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 });

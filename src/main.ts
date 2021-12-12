@@ -26,6 +26,8 @@ import {
   NCol,
   NRow,
   NNotificationProvider,
+  NMenu,
+  NInputGroup,
 } from 'naive-ui';
 import App from './App.vue';
 import router from './router';
@@ -60,6 +62,8 @@ const naive = create({
     NCol,
     NRow,
     NNotificationProvider,
+    NMenu,
+    NInputGroup,
   ],
 });
 

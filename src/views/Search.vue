@@ -10,25 +10,23 @@
         :native-scrollbar="false"
         bordered
       >
-      {{this.store.queryImages}}
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
+      <!-- {{this.store.queryImages}} -->
+      <!-- {{menuOptions}} -->
+      <n-input-group>
+        <n-input type="text"
+          @update:value="updateQuery" v-bind:value="query"
+          placeholder="filter"
+        />
+        <n-button type="primary" tertiary @click="fetchAndFlash" >
+          <n-icon>
+            <Retweet />
+          </n-icon>
+        </n-button>
+      </n-input-group>
+      <n-menu
+        :options="menuOptions"
+        accordion
+      />
       </n-layout-sider>
       <n-layout-content>
           <router-view class="contents"/>
@@ -46,18 +44,54 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import {
+  Retweet,
+} from '@vicons/fa';
 import { useStore } from '@/store/image';
+import { groupBy } from '@/lib/ArrayUtil';
+import { MenuItem } from '@/@types';
 // import { key } from './store';
 
 @Options({
   components: {
+    Retweet,
   },
 })
 export default class Search extends Vue {
   public store = useStore();
+  public query = '';
+  public menuOptions = new Array<MenuItem>();
+
+  updateQuery(key: string) {
+    this.query = key;
+    this.flashMenu();
+  }
+
+  fetchAndFlash() {
+    this.store.FETCH_CATALOG().then(() => this.flashMenu());
+  }
+
+  flashMenu() {
+    this.menuOptions.length = 0;
+    groupBy(
+      this.store.queryImages.filter(key => (this.query === '' ? true : key.includes(this.query))),
+      imageName => (imageName.split('/', 1)[0]),
+    )
+      .forEach((child, key) => {
+        this.menuOptions.push(this.buidlMenuItem(key, child));
+      });
+  }
+
+  private buidlMenuItem(key: string, list: Array<string>): MenuItem {
+    const base = { label: key, key } as MenuItem;
+    if (list.length >= 1 && list[0] !== key) {
+      base.children = list.map(str => this.buidlMenuItem(str, []));
+    }
+    return base;
+  }
+
   created() {
-    this.store.FETCH_CATALOG();
-    console.log();
+    this.fetchAndFlash();
   }
 }
 </script>

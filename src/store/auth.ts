@@ -1,7 +1,7 @@
 import { defineStore, createPinia } from 'pinia';
 import axios, { AxiosBasicCredentials, AxiosError } from 'axios';
 import query from '@/query';
-import { CatLog, UserAuth } from '@/@types';
+import { CataLog, UserAuth } from '@/@types';
 
 const auth = JSON.parse(localStorage.getItem('auth') || sessionStorage.getItem('auth') || '{}');
 
@@ -39,7 +39,7 @@ export const useStore = defineStore('auth', {
       }
       sessionStorage.setItem('auth', JSON.stringify(this.auth));
       try {
-        const result = await query.query<CatLog>({
+        const result = await query.query<CataLog>({
           url: '_catalog',
         });
         return true;
