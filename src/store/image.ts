@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import query from '@/query';
-import { CataLog } from '@/@types';
+import { CataLog, ImageTag, Manifest } from '@/@types';
 // export enum ImageActions {
 //   FETCH_IMAGES = 'FETCH_IMAGES',
 // }
@@ -23,6 +23,18 @@ export const useStore = defineStore('image', {
       } catch (e) {
         console.log(e);
       }
+    },
+    async FETCH_TAGS(name: string): Promise<string[]> {
+      const imageTag = await query.query<ImageTag>({
+        url: `${name}/tags/list`,
+      });
+      return imageTag.tags;
+    },
+    async FETCH_MANIFESTS(name: string, reference: string): Promise<Manifest> {
+      const manifest = await query.query<Manifest>({
+        url: `${name}/manifests/${reference}`,
+      });
+      return manifest;
     },
   },
 });

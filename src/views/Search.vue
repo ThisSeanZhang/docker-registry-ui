@@ -17,7 +17,7 @@
           @update:value="updateQuery" v-bind:value="query"
           placeholder="filter"
         />
-        <n-button type="primary" tertiary @click="fetchAndFlash" >
+        <n-button type="primary" tertiary @click="fetchAndFresh" >
           <n-icon>
             <Retweet />
           </n-icon>
@@ -29,9 +29,11 @@
         accordion
       />
       </n-layout-sider>
-      <n-layout-content>
+      <n-layout-content
+        :native-scrollbar="false"
+      >
           <router-view class="contents"/>
-        </n-layout-content>
+      </n-layout-content>
     </n-layout>
     <n-layout-footer
       position="absolute"
@@ -68,7 +70,7 @@ export default class Search extends Vue {
     this.flashMenu();
   }
 
-  fetchAndFlash() {
+  fetchAndFresh() {
     this.store.FETCH_CATALOG().then(() => this.flashMenu());
   }
 
@@ -96,7 +98,7 @@ export default class Search extends Vue {
   }
 
   created() {
-    this.fetchAndFlash();
+    this.fetchAndFresh();
   }
 }
 </script>

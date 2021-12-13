@@ -10,7 +10,6 @@ const TIME_OUT_MAX = 5000;
 
 function getAuth() :AxiosBasicCredentials {
   const auth: AxiosBasicCredentials = JSON.parse(localStorage.getItem('auth') || sessionStorage.getItem('auth') || '{}');
-  console.log(auth);
   return auth;
 }
 function convert2Config(

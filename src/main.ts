@@ -28,6 +28,17 @@ import {
   NNotificationProvider,
   NMenu,
   NInputGroup,
+  NCollapse,
+  NCollapseItem,
+  NText,
+  NSpin,
+  NEmpty,
+  NDescriptions,
+  NDescriptionsItem,
+  NPopover,
+  NList,
+  NListItem,
+  NThing,
 } from 'naive-ui';
 import App from './App.vue';
 import router from './router';
@@ -64,6 +75,17 @@ const naive = create({
     NNotificationProvider,
     NMenu,
     NInputGroup,
+    NCollapse,
+    NCollapseItem,
+    NText,
+    NSpin,
+    NEmpty,
+    NDescriptions,
+    NDescriptionsItem,
+    NPopover,
+    NList,
+    NListItem,
+    NThing,
   ],
 });
 
