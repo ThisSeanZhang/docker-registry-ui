@@ -36,6 +36,12 @@ export const useStore = defineStore('image', {
       });
       return manifest;
     },
+    async FETCH_BLOB(name: string, digest: string): Promise<Manifest> {
+      const manifest = await query.query<Manifest>({
+        url: `${name}/blobs/${digest}`,
+      });
+      return manifest;
+    },
   },
 });
 export default useStore;

@@ -39,7 +39,11 @@ import {
   NList,
   NListItem,
   NThing,
+  NDrawer,
+  NDrawerContent,
+  NDivider,
 } from 'naive-ui';
+import { VueClipboard } from '@soerenmartius/vue3-clipboard';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -86,8 +90,15 @@ const naive = create({
     NList,
     NListItem,
     NThing,
+    NDrawer,
+    NDrawerContent,
+    NDivider,
   ],
 });
 
-createApp(App).use(naive).use(store).use(router)
+createApp(App)
+  .use(naive)
+  .use(store)
+  .use(VueClipboard)
+  .use(router)
   .mount('#app');

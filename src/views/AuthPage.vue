@@ -49,7 +49,7 @@ import { UserAuth } from '@/@types';
 })
 export default class Home extends Vue {
   public store = useStore();
-  public notification = useNotification()
+  public notification = useNotification();
   public info: UserAuth = {
     auth: {
       username: '',
