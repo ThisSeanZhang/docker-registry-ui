@@ -27,5 +27,9 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-
+const defaultTitle = 'Docker Registry UI';
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title ? to.meta.title as string : defaultTitle;
+  next();
+});
 export default router;
