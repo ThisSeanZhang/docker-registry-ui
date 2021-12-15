@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: default
+name: build-and-push
 
 steps:
 - name: build
@@ -62,6 +62,9 @@ trigger:
 kind: pipeline
 type: docker
 name: la24
+
+depends_on:
+- build-and-push
 
 steps:
 - name: build docker
