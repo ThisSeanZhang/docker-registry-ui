@@ -36,6 +36,8 @@ steps:
     CI_REGISTRY:
       from_secret: CI_REGISTRY
   commands:
+  - ls -la
+  - cp Dockerfile /dist/Dockerfile  
   - cd /dist
   - docker build -t $CI_REGISTRY/docker-registry-ui:latest .
   - docker images
