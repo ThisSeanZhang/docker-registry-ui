@@ -1,0 +1,22 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: build
+  image: clearlinux:latest
+  commands:
+  - sudo swupd bundle-add nodejs-basic
+  - npm install --global yarn
+  - yarn  --version
+  - yarn build
+  - ls -la
+  # - cd public && ls -la
+  # - tar -czvf ../public.tar.gz ./*
+  # - cd ..
+  # - tar -tzvf public.tar.gz
+  - pwd
+
+trigger:
+  branch:
+  - master
