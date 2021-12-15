@@ -61,7 +61,7 @@ trigger:
 # other
 kind: pipeline
 type: docker
-name: default
+name: la24
 
 steps:
 - name: build docker
