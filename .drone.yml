@@ -10,6 +10,8 @@ steps:
   - npm install --global yarn
   - yarn  --version
   - yarn global add @vue/cli
+  - vue --version
+  - yarn
   - yarn build
   - ls -la
   # - cd public && ls -la
