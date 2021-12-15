@@ -14,14 +14,6 @@ steps:
   - yarn
   - yarn build
   - ls -la
-  # - cd public && ls -la
-  # - tar -czvf ../public.tar.gz ./*
-  # - cd ..
-  # - tar -tzvf public.tar.gz
-  - pwd
-  - cp -r ./dist/* /dist/
-  - cd /dist
-  - ls -la
 
 - name: build docker
   image: docker
