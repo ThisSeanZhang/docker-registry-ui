@@ -89,7 +89,7 @@ volumes:
   host:
     path: /var/run/docker.sock
 node:
-  la24:latest
+  la24: latest
 trigger:
   branch:
   - main
