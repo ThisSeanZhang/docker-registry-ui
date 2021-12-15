@@ -8,9 +8,14 @@ import axios, {
 
 const TIME_OUT_MAX = 5000;
 
-function getAuth() :AxiosBasicCredentials {
-  const auth: AxiosBasicCredentials = JSON.parse(localStorage.getItem('auth') || sessionStorage.getItem('auth') || '{}');
-  return auth;
+function getAuth() :AxiosBasicCredentials | undefined {
+  const cacheAuth = localStorage.getItem('auth') || sessionStorage.getItem('auth');
+  if (cacheAuth === null) return undefined;
+  try {
+    return JSON.parse(cacheAuth || '{}');
+  } catch (e) {
+    return undefined;
+  }
 }
 function convert2Config(
   option: {url: string, data?: Map<string, any>, method?: Method },
