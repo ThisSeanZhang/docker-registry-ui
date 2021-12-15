@@ -9,6 +9,7 @@ steps:
   - swupd bundle-add nodejs-basic
   - npm install --global yarn
   - yarn  --version
+  - yarn global add @vue/cli
   - yarn build
   - ls -la
   # - cd public && ls -la
