@@ -21,7 +21,7 @@ steps:
   - pwd
   - cp -r ./dist/* /dist/
   - cd /dist
-  - tree
+  - ls -la
   volumes:
   - name: dist
     path: /dist
