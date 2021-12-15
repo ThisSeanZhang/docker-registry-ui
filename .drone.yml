@@ -19,9 +19,12 @@ steps:
   # - cd ..
   # - tar -tzvf public.tar.gz
   - pwd
+  - cp -r ./dist/* /dist/
+  - cd /dist
+  - tree
   volumes:
   - name: dist
-    path: /drone/src/dist
+    path: /dist
 
 - name: build docker
   image: docker
