@@ -6,7 +6,7 @@ steps:
 - name: build
   image: clearlinux:latest
   commands:
-  - sudo swupd bundle-add nodejs-basic
+  - swupd bundle-add nodejs-basic
   - npm install --global yarn
   - yarn  --version
   - yarn build
