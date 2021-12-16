@@ -5,6 +5,7 @@ name: build-and-push
 steps:
 - name: build
   image: registry.w-w.cyou/build-yarn-vue:latest
+  pull: if-not-exists
   commands:
   # - swupd bundle-add nodejs-basic
   # - npm install --global yarn
