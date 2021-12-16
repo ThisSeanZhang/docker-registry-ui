@@ -45,8 +45,8 @@ trigger:
   branch:
   - main
 
-node:
-  la24: latest
+image_pull_secrets:
+- dockerconfig
 ---
 # other
 kind: pipeline
