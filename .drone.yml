@@ -4,12 +4,12 @@ name: build-and-push
 
 steps:
 - name: build
-  image: clearlinux:latest
+  image: registry.w-w.cyou/build-yarn-vue:latest
   commands:
-  - swupd bundle-add nodejs-basic
-  - npm install --global yarn
-  - yarn  --version
-  - yarn global add @vue/cli
+  # - swupd bundle-add nodejs-basic
+  # - npm install --global yarn
+  # - yarn  --version
+  # - yarn global add @vue/cli
   - vue --version
   - yarn
   - yarn build
