@@ -45,6 +45,8 @@ trigger:
   branch:
   - main
 
+node:
+  la24: latest
 ---
 # other
 kind: pipeline
