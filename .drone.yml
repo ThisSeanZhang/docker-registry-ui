@@ -41,7 +41,7 @@ volumes:
 
 node:
   la24: latest
----
+# ---
 # other
 # kind: pipeline
 # type: docker
