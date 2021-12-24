@@ -62,7 +62,7 @@ steps:
     REGISTRY_DATA_PATH:
       from_secret: REGISTRY_DATA_PATH
   commands:
-  - docker-compose up -d
+  - docker-compose up -d --force-recreate
   volumes:
   - name: docker
     path: /var/run/docker.sock
