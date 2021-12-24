@@ -61,6 +61,8 @@ steps:
       from_secret: BASE_AUTH_PASS
     REGISTRY_DATA_PATH:
       from_secret: REGISTRY_DATA_PATH
+    REGISTRY_HOST:
+      from_secret: REGISTRY_HOST
   commands:
   - docker-compose up -d --force-recreate
   volumes:
