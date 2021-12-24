@@ -48,8 +48,8 @@ kind: pipeline
 type: docker
 name: la24
 
-depends_on:
-- build-and-push
+# depends_on:
+# - build-and-push
 
 steps:
 - name: build docker
