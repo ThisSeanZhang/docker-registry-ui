@@ -1,4 +1,5 @@
-# docker-registry-ui
+
+# docker-registry-ui[![Build Status](https://drone.whileaway.io/api/badges/ThisSeanZhang/docker-registry-ui/status.svg)](https://drone.whileaway.io/ThisSeanZhang/docker-registry-ui)
 simple docker registry ui
 
 # how to use
@@ -9,6 +10,7 @@ in your target dir create **.env**
 BASE_AUTH_USERNAME=admin
 BASE_AUTH_PASS=$2y$05$DsPGHuNe34kVhtyEB/k31.nrv/dVyL4I84nUKbBYGU3sL2z/2HFWO
 REGISTRY_DATA_PATH=/data/registry/data
+REGISTRY_HOST=
 ```
 ## compose demo
 @import "docker-compose.yml"
