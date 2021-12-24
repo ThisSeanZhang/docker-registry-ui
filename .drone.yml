@@ -4,13 +4,8 @@ name: build-and-push
 
 steps:
 - name: build
-  image: registry.w-w.cyou/build-yarn-vue:latest
-  pull: if-not-exists
+  image: thisseanzhang/build-yarn-vue:latest
   commands:
-  # - swupd bundle-add nodejs-basic
-  # - npm install --global yarn
-  # - yarn  --version
-  # - yarn global add @vue/cli
   - vue --version
   - yarn
   - yarn build
@@ -20,19 +15,17 @@ steps:
   image: docker
   environment:
     CI_REGISTRY_USER:
-      from_secret: CI_REGISTRY_USER
+      from_secret: CI_HUB_USER
     CI_REGISTRY_PASSWORD:
-      from_secret: CI_REGISTRY_PASSWORD
-    CI_REGISTRY:
-      from_secret: CI_REGISTRY
+      from_secret: CI_HUB_PASSWORD
   commands:
   - ls -la dist
-  - docker build -t $CI_REGISTRY/docker-registry-ui:latest .
+  - docker build -t $CI_REGISTRY_USER/docker-registry-ui:latest .
   - docker images
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  - docker push $CI_REGISTRY/docker-registry-ui:latest
-  - docker logout $CI_REGISTRY
-  - docker rmi $CI_REGISTRY/docker-registry-ui:latest
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+  - docker push $CI_REGISTRY_USER/docker-registry-ui:latest
+  - docker logout 
+  - docker rmi $CI_REGISTRY_USER/docker-registry-ui:latest
   volumes:
   - name: docker
     path: /var/run/docker.sock
@@ -42,48 +35,48 @@ volumes:
   host:
     path: /var/run/docker.sock
 
-trigger:
-  branch:
-  - main
+# trigger:
+#   branch:
+#   - main
 
-image_pull_secrets:
-- dockerconfig
----
-# other
-kind: pipeline
-type: docker
-name: la24
-
-depends_on:
-- build-and-push
-
-steps:
-- name: build docker
-  image: docker
-  environment:
-    CI_REGISTRY_USER:
-      from_secret: CI_REGISTRY_USER
-    CI_REGISTRY_PASSWORD:
-      from_secret: CI_REGISTRY_PASSWORD
-    CI_REGISTRY:
-      from_secret: CI_REGISTRY
-  commands:
-  - docker images
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  - docker pull $CI_REGISTRY/docker-registry-ui:latest
-  - docker images
-  - docker logout $CI_REGISTRY
-  - docker rmi $CI_REGISTRY/docker-registry-ui:latest
-  volumes:
-  - name: docker
-    path: /var/run/docker.sock
-    
-volumes:
-- name: docker
-  host:
-    path: /var/run/docker.sock
 node:
   la24: latest
-trigger:
-  branch:
-  - main
+---
+# other
+# kind: pipeline
+# type: docker
+# name: la24
+
+# depends_on:
+# - build-and-push
+
+# steps:
+# - name: build docker
+#   image: docker
+#   environment:
+#     CI_REGISTRY_USER:
+#       from_secret: CI_REGISTRY_USER
+#     CI_REGISTRY_PASSWORD:
+#       from_secret: CI_REGISTRY_PASSWORD
+#     CI_REGISTRY:
+#       from_secret: CI_REGISTRY
+#   commands:
+#   - docker images
+#   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#   - docker pull $CI_REGISTRY/docker-registry-ui:latest
+#   - docker images
+#   - docker logout $CI_REGISTRY
+#   - docker rmi $CI_REGISTRY/docker-registry-ui:latest
+#   volumes:
+#   - name: docker
+#     path: /var/run/docker.sock
+    
+# volumes:
+# - name: docker
+#   host:
+#     path: /var/run/docker.sock
+# node:
+#   la24: latest
+# trigger:
+#   branch:
+#   - main
