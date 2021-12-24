@@ -6,7 +6,8 @@
     <n-button size="small">看看别的</n-button>
   </template> -->
 </n-empty>
-<n-collapse display-directive="if"
+<n-collapse display-directive="if" @item-header-click="updateName"
+  :expanded-names="names"
 v-else>
   <n-collapse-item v-for="label in items" :key="label"
     :title="`${imageName}:${label}`" :name="label"
@@ -27,86 +28,99 @@ v-else>
 </div>
 </template>
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+} from 'vue';
 import { Copy } from '@vicons/fa';
 import { toClipboard } from '@soerenmartius/vue3-clipboard';
+import { useRoute } from 'vue-router';
 import { useNotification } from 'naive-ui';
 import { useStore } from '@/store/image';
 import Manifest from '@/components/image/Manifest.vue';
 
-@Options({
+export default defineComponent({
+  name: 'tag',
   components: {
     Manifest,
     Copy,
   },
-  watch: {
-    imageName: function watchName() {
-      this.refreshTags();
-    },
-  },
-})
-export default class Tag extends Vue {
-  public store = useStore();
-  public spin = false;
-  public notification = useNotification();
-  // public expandedKey: (string | number)[] = [];
-  public items = [
-    // 'a',
-    // 'b',
-    // 'c',
-    // 'd',
-    // 'e',
-    // 'f',
-    // 'g',
-    // 'h',
-    // 'i',
-    // 'j',
-    // 'k',
-    // 'l',
-    // 'm',
-    // 'n',
-    // 'o',
-    // 'p',
-  ] as string[];
+  setup() {
+    const route = useRoute();
+    // const router = useRouter();
+    const store = useStore();
+    const spin = ref(false);
+    const notification = useNotification();
+    const items = ref([
+      // 'a',
+      // 'b',
+      // 'c',
+      // 'd',
+      // 'e',
+      // 'f',
+      // 'g',
+      // 'h',
+      // 'i',
+      // 'j',
+      // 'k',
+      // 'l',
+      // 'm',
+      // 'n',
+      // 'o',
+      // 'p',
+    ] as string[]);
+    const imageName = computed(() => (route.name ? route.params.name.toString() : 'none'));
+    const names = ref([] as string[]);
 
-  get imageName():string {
-    return this.$route.name ? this.$route.params.name.toString() : 'none';
-  }
-
-  refreshTags() {
-    this.spin = true;
-    this.store.FETCH_TAGS(this.imageName).then(tags => {
-      this.items = tags;
-      // this.expandedKey = [];
-      this.spin = false;
-    });
-  }
-
-  // changeCollapse(data: { name: string | number, expanded: boolean, event: MouseEvent }) {
-  //   this.expandedKey = [data.name];
-  // }
-
-  copyText(text: string) {
-    toClipboard(`${window.location.host}/${text}`)
-      .then(() => {
-        this.notification.success({
-          content: 'Copy Success',
-          meta: 'Enjoy',
-          duration: 500,
-        });
-      }).catch(() => {
-        this.notification.error({
-          content: 'Copy Error',
-          meta: 'Please Try Again',
-          duration: 500,
-        });
+    function refreshTags() {
+      spin.value = true;
+      store.FETCH_TAGS(imageName.value).then(tags => {
+        items.value = tags;
+        // this.expandedKey = [];
+        spin.value = false;
       });
-  }
+    }
+    refreshTags();
+    watch(imageName, () => {
+      names.value = [];
+      refreshTags();
+    });
 
-  created() {
-    this.refreshTags();
-  }
-}
+    function copyText(text: string) {
+      toClipboard(`${window.location.host}/${text}`)
+        .then(() => {
+          notification.success({
+            content: 'Copy Success',
+            meta: 'Enjoy',
+            duration: 500,
+          });
+        }).catch(() => {
+          notification.error({
+            content: 'Copy Error',
+            meta: 'Please Try Again',
+            duration: 500,
+          });
+        });
+    }
+    function updateName({ name, expanded }:{name: string, expanded: boolean}) {
+      if (expanded) {
+        names.value.push(name);
+      } else {
+        names.value = names.value.filter(n => n !== name);
+      }
+    }
+    return {
+      spin,
+      names,
+      items,
+      imageName,
+      copyText,
+      updateName,
+    };
+  },
+});
 </script>
 <style scoped lang="scss">
 .board{

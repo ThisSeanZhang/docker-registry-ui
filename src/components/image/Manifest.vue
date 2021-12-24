@@ -15,7 +15,7 @@
 </div>
 </template>
 <script lang="ts">
-import { ref } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useStore } from '@/store/image';
 import ManifestV1 from '@/components/image/ManifestV1.vue';
 import ManifestV2 from '@/components/image/ManifestV2.vue';
@@ -43,11 +43,20 @@ export default {
     const spin = ref(true);
     const manifest = ref(null as Manifest|null);
     const store = useStore();
+    const currentLabel = computed(() => `${props.imageName}:${props.reference}`);
 
-    store.FETCH_MANIFESTS(props.imageName, props.reference).then(mf => {
-      manifest.value = mf;
-      spin.value = false;
+    function updateImageInfo() {
+      store.FETCH_MANIFESTS(props.imageName, props.reference).then(mf => {
+        manifest.value = mf;
+        spin.value = false;
+      });
+    }
+
+    watch(currentLabel, () => {
+      spin.value = true;
+      updateImageInfo();
     });
+    updateImageInfo();
 
     return {
       spin,
