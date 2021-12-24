@@ -1,0 +1,43 @@
+version: '3.5'
+
+services:
+  docker_registry_ui:
+    image: thisseanzhang/docker-registry-ui:latest
+    restart: always
+    container_name: docker_registry_ui 
+    hostname: docker_registry_ui
+    networks:
+      - main_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.registry-ui.tls=true"
+      - "traefik.http.routers.registry-ui.tls.certresolver=tls"
+      - "traefik.http.routers.registry-ui.entrypoints=websecure"
+      - "traefik.http.routers.registry-ui.rule=Host(`registry.w-w.cyou`)"
+      - "traefik.http.routers.registry-ui.service=registry-ui"
+      - "traefik.http.services.registry-ui.loadbalancer.server.port=80"
+      - "traefik.http.routers.registry-ui.middlewares=registry"
+  docker_registry:
+    image: registry:2
+    restart: always
+    container_name: docker_registry 
+    hostname: docker_registry
+    networks:
+      - main_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.registry.tls=true"
+      - "traefik.http.routers.registry.tls.certresolver=tls"
+      - "traefik.http.routers.registry.entrypoints=websecure"
+      - "traefik.http.routers.registry.rule=Host(`registry.w-w.cyou`) && PathPrefix(`/v2`)"
+      - "traefik.http.routers.registry.service=registry"
+      - "traefik.http.services.registry.loadbalancer.server.port=5000"
+      - "traefik.http.routers.registry.middlewares=registry"
+      - "traefik.http.middlewares.registry.basicauth.realm=MyRealm"
+      - "traefik.http.middlewares.registry.basicauth.headerField=WWW-Authenticate"
+      - "traefik.http.middlewares.registry.basicauth.users=${BASE_AUTH_USERNAME:-admin}:${BASE_AUTH_PASS:-$2y$05$DsPGHuNe34kVhtyEB/k31.nrv/dVyL4I84nUKbBYGU3sL2z/2HFWO}"
+    volumes:
+      - ${REGISTRY_DATA_PATH:-/data/registry}/data:/var/lib/registry
+networks:
+  main_net:
+    external: true

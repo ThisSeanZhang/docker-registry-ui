@@ -41,42 +41,38 @@ volumes:
 
 node:
   la24: latest
-# ---
-# other
-# kind: pipeline
-# type: docker
-# name: la24
 
-# depends_on:
-# - build-and-push
+---
 
-# steps:
-# - name: build docker
-#   image: docker
-#   environment:
-#     CI_REGISTRY_USER:
-#       from_secret: CI_REGISTRY_USER
-#     CI_REGISTRY_PASSWORD:
-#       from_secret: CI_REGISTRY_PASSWORD
-#     CI_REGISTRY:
-#       from_secret: CI_REGISTRY
-#   commands:
-#   - docker images
-#   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-#   - docker pull $CI_REGISTRY/docker-registry-ui:latest
-#   - docker images
-#   - docker logout $CI_REGISTRY
-#   - docker rmi $CI_REGISTRY/docker-registry-ui:latest
-#   volumes:
-#   - name: docker
-#     path: /var/run/docker.sock
+kind: pipeline
+type: docker
+name: la24
+
+depends_on:
+- build-and-push
+
+steps:
+- name: build docker
+  image: docker/compose
+  environment:
+    BASE_AUTH_USERNAME:
+      from_secret: BASE_AUTH_USERNAME
+    BASE_AUTH_PASS:
+      from_secret: BASE_AUTH_PASS
+    REGISTRY_DATA_PATH:
+      from_secret: REGISTRY_DATA_PATH
+  commands:
+  - docker-compose config
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
     
-# volumes:
-# - name: docker
-#   host:
-#     path: /var/run/docker.sock
-# node:
-#   la24: latest
+volumes:
+- name: docker
+  host:
+    path: /var/run/docker.sock
+node:
+  la24: latest
 # trigger:
 #   branch:
 #   - main
