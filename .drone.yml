@@ -1,55 +1,55 @@
-# kind: pipeline
-# type: docker
-# name: build-and-push
+kind: pipeline
+type: docker
+name: build-and-push
 
-# steps:
-# - name: build
-#   image: thisseanzhang/build-yarn-vue:latest
-#   commands:
-#   - vue --version
-#   - yarn
-#   - yarn build
-#   - ls -la
+steps:
+- name: build
+  image: thisseanzhang/build-yarn-vue:latest
+  commands:
+  - vue --version
+  - yarn
+  - yarn build
+  - ls -la
 
-# - name: build docker
-#   image: docker
-#   environment:
-#     CI_REGISTRY_USER:
-#       from_secret: CI_HUB_USER
-#     CI_REGISTRY_PASSWORD:
-#       from_secret: CI_HUB_PASSWORD
-#   commands:
-#   - ls -la dist
-#   - docker build -t $CI_REGISTRY_USER/docker-registry-ui:latest .
-#   - docker images
-#   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-#   - docker push $CI_REGISTRY_USER/docker-registry-ui:latest
-#   - docker logout 
-#   - docker rmi $CI_REGISTRY_USER/docker-registry-ui:latest
-#   volumes:
-#   - name: docker
-#     path: /var/run/docker.sock
+- name: build docker
+  image: docker
+  environment:
+    CI_REGISTRY_USER:
+      from_secret: CI_HUB_USER
+    CI_REGISTRY_PASSWORD:
+      from_secret: CI_HUB_PASSWORD
+  commands:
+  - ls -la dist
+  - docker build -t $CI_REGISTRY_USER/docker-registry-ui:latest .
+  - docker images
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+  - docker push $CI_REGISTRY_USER/docker-registry-ui:latest
+  - docker logout 
+  - docker rmi $CI_REGISTRY_USER/docker-registry-ui:latest
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
     
-# volumes:
-# - name: docker
-#   host:
-#     path: /var/run/docker.sock
+volumes:
+- name: docker
+  host:
+    path: /var/run/docker.sock
 
-# # trigger:
-# #   branch:
-# #   - main
+trigger:
+  branch:
+  - main
 
-# node:
-#   la24: latest
+node:
+  la24: latest
 
-# ---
+---
 
 kind: pipeline
 type: docker
-name: la24
+name: deploy-demo
 
-# depends_on:
-# - build-and-push
+depends_on:
+- build-and-push
 
 steps:
 - name: build docker
@@ -73,6 +73,6 @@ volumes:
     path: /var/run/docker.sock
 node:
   la24: latest
-# trigger:
-#   branch:
-#   - main
+trigger:
+  branch:
+  - main
